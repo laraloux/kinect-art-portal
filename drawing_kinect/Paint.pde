@@ -15,13 +15,13 @@ class Paint{
   
   void update(){
     this.location.add(this.velocity);
-    this.alpha -= 0.01 * noise(yOff);
-    this.size-= -0.1 * noise(yOff);
+    this.alpha -= 0.1 * noise(yOff);
+    this.size -= -0.1 * noise(yOff);
   }
     
   void show(){
     noStroke() ;
-    fill(map(this.alpha,50,0,240,80),70, 100 ,this.alpha);
+    fill(map(this.alpha,50,0,360,0),70, 100 ,this.alpha);
     circle(this.location.x, this.location.y, this.size);
   }
 }

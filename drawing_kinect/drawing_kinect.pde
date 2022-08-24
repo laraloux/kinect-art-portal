@@ -41,7 +41,7 @@ void drawPaintDrop(){
   for(int i = 0; i < paintdrops.size(); i++) {
     paintdrops.get(i).update();
     paintdrops.get(i).show() ;
-    if(paintdrops.get(i).alpha<10){
+    if(paintdrops.get(i).size>100){
       paintdrops.remove(i);
     }
   }
