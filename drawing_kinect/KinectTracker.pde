@@ -1,18 +1,15 @@
 class KinectTracker {
   int threshold = 875;
-  PVector loc;
-  PVector lerpedLoc;
   int[] depth;
-  PImage display;
-   
+  PVector location;
+  PImage image;
+
   KinectTracker() {
     kinect.initDepth();
     kinect.enableMirror(true);
-    
-    display = createImage(kinect.width, kinect.height, RGB);
-    
-    loc = new PVector(0, 0);
-    lerpedLoc = new PVector(0, 0);
+
+    image = createImage(kinect.width, kinect.height, RGB);
+    location = new PVector(0, 0);
   }
 
   void track() {
@@ -38,50 +35,32 @@ class KinectTracker {
     }
     
     if (totalPixels != 0) {
-      loc = new PVector(sumX/totalPixels, sumY/totalPixels);
+      location = new PVector(sumX/totalPixels, sumY/totalPixels);
     }
-
-    lerpedLoc.x = PApplet.lerp(lerpedLoc.x, loc.x, 0.3f);
-    lerpedLoc.y = PApplet.lerp(lerpedLoc.y, loc.y, 0.3f);
-  }
-
-  PVector getLerpedPos() {
-    return lerpedLoc;
   }
 
   PVector getPos() {
-    return loc;
+    return location;
   }
 
-  void display() {
-  // PImage img = kinect.getDepthImage();
-  //  if (depth == null || img == null) return;
-
-    display.loadPixels();
+  void displayShadow() {
+    image.loadPixels();
     for (int x = 0; x < kinect.width; x++) {
       for (int y = 0; y < kinect.height; y++) {
         
         int offset = x + y * kinect.width;
         int rawDepth = depth[offset];
-        int pix = x + y * display.width;
+        int pix = x + y * image.width;
         
         if (rawDepth < threshold) {
-          display.pixels[pix] = color(#091524);
+          image.pixels[pix] = color(#091524);
         } else {
-            display.pixels[pix] = color(#010812);
+            image.pixels[pix] = color(#010812);
         }
       }
     }
     
-    display.updatePixels();
-    image(display, 0, 0,displayWidth, displayHeight);
-  }
-
-  int getThreshold() {
-    return threshold;
-  }
-
-  void setThreshold(int t) {
-    threshold =  t;
+    image.updatePixels();
+    image(image, 0, 0,displayWidth, displayHeight);
   }
 }
